@@ -41,3 +41,9 @@
 | 08 | Os automóveis podem ser registrados como **propriedade de clientes, empresas ou bancos**. | 1 |
 | 09 | Os automóveis são compostos pelos seguintes dados: matrícula, ano, marca, modelo e placa.| 1 |
 | 10 | Um usuário individual é classificado como **`Cliente`**, enquanto empresas e bancos são classificados como **`Agentes`**. | 1 |
+
+### **Modelagens**
+
+#### **Diagrama de Casos de Uso**
+
+![UseCaseDiagram](/projeto/DiagramaDeCasosDeUso.drawio.svg)
