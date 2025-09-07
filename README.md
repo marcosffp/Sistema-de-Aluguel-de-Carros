@@ -7,6 +7,8 @@
 | Usuário | Me cadastrar no sistema | Usar de todos os recursos disponíveis |
 | Cliente | Introduzir, modificar, consultar e cancelar pedidos de aluguel | Poder alugar um carro |
 | Agente | Modificar e avaliar pedidos de aluguel | Dar continuidade ao processo de aluguel de um carro |
+| Agente | Registrar um automóvel | Disponibilizar o mesmo para aluguel |
+| Agente | Registrar um contrato de aluguel com o cliente | Possibilitar o aluguel de um carro para o mesmo |
 
 ---
 
