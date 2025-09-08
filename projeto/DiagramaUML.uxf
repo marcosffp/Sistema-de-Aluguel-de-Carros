@@ -1,0 +1,118 @@
+<diagram program="umletino" version="15.1"><zoom_level>5</zoom_level><element><id>UMLClass</id><coordinates><x>500</x><y>330</y><w>150</w><h>100</h></coordinates><panel_attributes>Cliente
+--
+- id: Long
+- rg: String
+- cpf: String
+- nome: String
+- endereco: String
+- profissao: String
+--
++ adicionarRenda(renda: Renda): void
++ adicionarPedido(pedido: PedidosAluguel): void
++ modificarPedido(pedido: PedidoAluguel): void
++ consultarPedidos(): List&lt;PedidosAluguel
++ cancelarPedido(pedido: PedidoAluguel): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>705</x><y>370</y><w>110</w><h>50</h></coordinates><panel_attributes>FonteRenda 
+--
+- id: Long
+- entidadeEmpregadora: String
+- rendimentoMensal: double 
+--
++ registrarRenda():void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>645</x><y>390</y><w>70</w><h>20</h></coordinates><panel_attributes>lt=&lt;-
+m2=1..1
+m1=1..n</panel_attributes><additional_attributes>120;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>380</x><y>435</y><w>150</w><h>90</h></coordinates><panel_attributes>Automovel 
+--
+- id: Long
+- matricula: String
+- ano: int
+- marca: String
+- modelo: String
+- placa: String
+- disponivel: boolean
+--
++ registrarAutomovel(automovel: Automovel): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>160</x><y>460</y><w>160</w><h>65</h></coordinates><panel_attributes>Proprietario 
+--
+- id: Long
+- nome: String
+- tipoProprietario: TipoProprietario
+- documento: String
+- endereco: String
+--
++ atualizarProprietario(proprietario: Proprietario): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>315</x><y>505</y><w>75</w><h>20</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+m2=1</panel_attributes><additional_attributes>10;10;130;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>280</x><y>350</y><w>150</w><h>60</h></coordinates><panel_attributes>PedidoAluguel 
+--
+- id: Long
+- financiamento: boolean
+- dataCriacao: LocalDateTime
+- dataModificacao: LocalDateTime
+--
++ criarPedidoAluguel():void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>75</x><y>450</y><w>60</w><h>65</h></coordinates><panel_attributes>&lt;&lt;Enum&gt;&gt;
+TipoProprietario
+--
++ CLIENTE
++ BANCO
++ EMPRESA</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>130</x><y>485</y><w>40</w><h>20</h></coordinates><panel_attributes></panel_attributes><additional_attributes>60;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>425</x><y>370</y><w>85</w><h>20</h></coordinates><panel_attributes>lt=&lt;-
+m2=1..1
+m1=1..n</panel_attributes><additional_attributes>10;10;150;10</additional_attributes></element><element><id>Relation</id><coordinates><x>340</x><y>405</y><w>50</w><h>90</h></coordinates><panel_attributes>lt=&lt;-
+m2=0..1
+m1=1</panel_attributes><additional_attributes>80;150;10;150;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>155</x><y>350</y><w>60</w><h>65</h></coordinates><panel_attributes>&lt;&lt;Enum&gt;&gt;
+StatusPedido
+--
++ PENDENTE
++ EM_ANALISE
++ APROVADO
++ REPROVADO
++ CANCELADO</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>370</y><w>80</w><h>20</h></coordinates><panel_attributes></panel_attributes><additional_attributes>140;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>280</x><y>215</y><w>150</w><h>70</h></coordinates><panel_attributes>ContratoAluguel 
+--
+- id: Long
+- financiamento: boolean
+- dataInicio: LocalDate
+- dataFim: LocalDate
+- valorMensal: double
+- ativo: boolean
+--
++ criarContratoAluguel():void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>345</x><y>280</y><w>25</w><h>80</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+m2=0..1</panel_attributes><additional_attributes>10;140;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>505</x><y>215</y><w>150</w><h>80</h></coordinates><panel_attributes>ContratoCredito 
+--
+- id: Long
+- valorFinanciado: double
+- parcelas: int
+- valorParcela: double
+- dataContrato: localDate
+- aprovado: boolean
+- assinado: boolean
+--
++ criarContratoCredito():void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>410</x><y>255</y><w>105</w><h>105</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+m2=0..1</panel_attributes><additional_attributes>10;190;190;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>705</x><y>215</y><w>205</w><h>110</h></coordinates><panel_attributes>AgenteBancario
+--
+- id: Long
+- nome: String
+- email: String
+- cnpjBanco: String
+- nomeBanco: String
+- ativo: boolean
+--
++ criarContratoCredito(contratoCredito: ContratoCredito):void
++ analisarPedidoFinanciamento(pedidoAluguel: PedidoAluguel: void
++ aprovarFinanciamento(pedidoAluguel: PedidoAluguel: void
++ recusarFinanciamento(pedidoAluguel: PedidoAluguel: void
++registrarAssinaturaCliente(contratoCredito: ContratoCredito): void
++ transferirPropriedadeAutomovel(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>605</x><y>290</y><w>110</w><h>45</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+m2=0..1</panel_attributes><additional_attributes>200;60;10;60;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>80</x><y>215</y><w>180</w><h>105</h></coordinates><panel_attributes>Atendente 
+--
+- id: Long
+- nome: String
+- email: String
+- matricula: String
+- ativo: boolean
+--
++ aprovarPedidoAluguel(pedido: PedidoAluguel): void
++ recusarPedidoAluguel(pedido: PedidoAluguel): void
++ encaminharParaBanco(pedido: PedidoAluguel): void
++ modificarPedido(pedido: PedidoAluguel): void
++ transferirPropriedadeAutomovel(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>315</y><w>90</w><h>45</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+m2=0..1</panel_attributes><additional_attributes>10;10;160;70</additional_attributes></element></diagram>
