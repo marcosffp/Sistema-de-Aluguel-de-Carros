@@ -1,20 +1,21 @@
-### **Requisitos do Sistema de Aluguel de Veículos**
+# **Sistema de Aluguel de Veículos**
 
-#### **História de Usuários**
+## **História de Usuários**
 
 | Como | Desejo | Para |
 |:-----|:-------|:-----|
 | Usuário | Me cadastrar no sistema | Usar de todos os recursos disponíveis |
 | Cliente | Introduzir, modificar, consultar e cancelar pedidos de aluguel | Poder alugar um carro |
+| Cliente | Solicitar um contrato do tipo de Crédito | Poder ter o carro em meu nome ao final do contrato |
 | Agente | Modificar e avaliar pedidos de aluguel | Dar continuidade ao processo de aluguel de um carro |
 | Agente | Registrar um automóvel | Disponibilizar o mesmo para aluguel |
 | Agente | Registrar um contrato de aluguel com o cliente | Possibilitar o aluguel de um carro para o mesmo |
 
 ---
 
-### **Requisitos**
+## **Requisitos**
 
-#### **Requisitos Funcionais (RF)**
+### **Requisitos Funcionais (RF)**
 
 | RF | Descrição | Complexidade |
 |:---|:---|:---|
@@ -29,7 +30,7 @@
 | 09 | O sistema deve permitir o **registro de contratos** de aluguel. | 2 |
 | 10 | O sistema deve permitir o **registro de automóveis**. | 1 |
 
-#### **Regras de Negócio (RN)**
+### **Regras de Negócio (RN)**
 
 | RN | Descrição | Complexidade |
 |:---|:---|:---|
@@ -44,8 +45,16 @@
 | 09 | Os automóveis são compostos pelos seguintes dados: matrícula, ano, marca, modelo e placa.| 1 |
 | 10 | Um usuário individual é classificado como **`Cliente`**, enquanto empresas e bancos são classificados como **`Agentes`**. | 1 |
 
-### **Modelagens**
+## **Projeto**
 
-#### **Diagrama de Casos de Uso**
+### **Diagrama de Casos de Uso**
 
 ![UseCaseDiagram](/projeto/DiagramaDeCasosDeUso.drawio.svg)
+
+### **Diagrama de Classes**
+
+![UML](/projeto/DiagramaDeClasses.jpg)
+
+### **Diagrama de Pacotes**
+
+![PackageDiagram](/projeto/DiagramaDePacote.jpg)
