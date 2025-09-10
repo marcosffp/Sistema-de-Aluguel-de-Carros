@@ -28,31 +28,46 @@ Aqui está a estrutura das histórias de usuário conforme o formato solicitado:
 
 | RF | Descrição | Complexidade |
 |:---|:---|:---|
-| 01 | O sistema deve permitir o **cadastro de novos usuários** (clientes e agentes). | 2 |
-| 02 | O sistema deve permitir o **login de usuários** previamente cadastrados. | 1 |
-| 03 | O Cliente deve poder **introduzir um novo pedido** de aluguel. | 2 |
-| 04 | O Cliente deve poder **modificar um pedido** de aluguel. | 2 |
-| 05 | O Cliente deve poder **consultar seus pedidos** de aluguel. | 1 |
-| 06 | O Cliente deve poder **cancelar um pedido** de aluguel. | 2 |
-| 07 | O Agente deve poder **modifica um pedido** de aluguel. | 2 |
-| 08 | O Agente deve poder **avaliar um pedido** de aluguel (análise financeira). | 3 |
-| 09 | O sistema deve permitir o **registro de contratos** de aluguel. | 2 |
-| 10 | O sistema deve permitir o **registro de automóveis**. | 1 |
+| 01 | O cliente cadastra no sistema. | 2 |
+| 02 | O cliente registra entidades empregadoras com seus respectivos rendimentos. | 3 |
+| 03 | O cliente gerencia seus pedidos de aluguel. | 2 |
+| 04 | O cliente cancela um pedido de aluguel que ainda não foi aprovado. | 2 |
+| 05 | O cliente solicita um contrato de crédito associado ao aluguel. | 2 |
+| 06 | O funcionário visualiza pedidos de aluguel atribuídos à sua empresa. | 1 |
+| 07 | O funcionário edita pedidos de aluguel para correção de dados. | 2 |
+| 08 | O funcionário encaminha pedidos de aluguel para análise de um agente bancário. | 1 |
+| 09 | O funcionário avalia o pedido de aluguel. | 3 |
+| 10 | O funcionário gera o contrato de aluguel. | 2 |
+| 11 | O funcionário registra a transferência de propriedade do veículo para o banco quando um contrato de crédito é formalizado. | 3 |
+| 12 | O agente bancário visualiza pedidos de aluguel encaminhados para análise. | 1 |
+| 13 | O agente bancário aprova ou reprova um pedido de aluguel com base na análise financeira. | 3 |
+| 14 | O agente bancário cria um contrato de crédito associado a um pedido aprovado. | 2 |
+| 15 | O agente bancário registra a transferência de propriedade do veículo para o cliente após a quitação do contrato. | 3 |
+
 
 ### **Regras de Negócio (RN)**
 
 | RN | Descrição | Complexidade |
 |:---|:---|:---|
-| 01 | O **cadastro de clientes** só é permitido após a inserção dos dados de identificação (RG, CPF, Nome, Endereço), profissão, entidades empregadoras e rendimentos. | 2 |
-| 02 | Um cliente pode ter até **três rendimentos** registrados. | 1 |
-| 03 | Um pedido de aluguel deve ser **analisado financeiramente** por um agente antes de ser aprovado. | 3 |
-| 04 | Um pedido de aluguel **só pode ser modificado ou cancelado pelo cliente** se seu status for "Em Análise". | 2 |
-| 05 | Um pedido de aluguel só pode ser **modificado por um agente** se seu status for "Em Análise". | 2 |
-| 06 | Um pedido de aluguel com parecer financeiro **positivo** é colocado sob consideração dos agentes para a execução do contrato. | 2 |
-| 07 | Um contrato de aluguel pode ser **associado a um contrato de crédito**, concedido por um banco agente. | 3 |
-| 08 | Os automóveis podem ser registrados como **propriedade de clientes, empresas ou bancos**. | 1 |
-| 09 | Os automóveis são compostos pelos seguintes dados: matrícula, ano, marca, modelo e placa.| 1 |
-| 10 | Um usuário individual é classificado como **`Cliente`**, enquanto empresas e bancos são classificados como **`Agentes`**. | 1 |
+| 01 | O sistema só pode ser utilizado por usuários previamente cadastrados. | 1 |
+| 02 | O cadastro de cliente requer os seguintes dados obrigatórios: RG, CPF, Nome, Endereço e Profissão. | 1 |
+| 03 | Um cliente pode registrar até três entidades empregadoras com seus respectivos rendimentos. | 1 |
+| 04 | Clientes podem criar, visualizar, editar e cancelar seus próprios pedidos de aluguel. | 2 |
+| 05 | Um cliente pode ter múltiplos pedidos de aluguel simultâneos. | 1 |
+| 06 | Todo pedido de aluguel deve passar por análise financeira por um agente bancário ou da empresa. | 3 |
+| 07 | Apenas agentes autorizados podem modificar ou avaliar pedidos de aluguel. | 2 |
+| 08 | Um pedido de aluguel pode estar associado a um contrato de crédito concedido por um banco agente. | 3 |
+| 09 | Após a quitação do contrato de crédito, a propriedade do veículo deve ser transferida para o cliente. | 3 |
+| 10 | A propriedade do veículo pode ser transferida entre cliente, empresa e banco conforme o estágio do contrato. | 3 |
+| 11 | A transferência de propriedade para o banco ocorre automaticamente quando o contrato de crédito é formalizado. | 3 |
+| 12 | Em contratos de aluguel sem crédito, a propriedade do veículo permanece com a empresa locadora. | 1 |
+| 13 | Agentes (bancos/empresas) têm acesso apenas aos pedidos atribuídos especificamente para sua análise ou modificação. | 2 |
+| 14 | Funcionários da empresa podem encaminhar pedidos para análise bancária e editar pedidos para correções de dados. | 2 |
+| 15 | Após análise positiva, o pedido é aprovado e o contrato de aluguel é gerado automaticamente. | 2 |
+| 16 | Pedidos reprovados na análise são automaticamente arquivados e não prosseguem para contratação. | 1 |
+| 17 | Cada veículo deve ser registrado com os seguintes dados: matrícula, ano, marca, modelo e placa. | 1 |
+| 18 | Um veículo só pode ser alugado se estiver disponível e não vinculado a um contrato ativo. | 2 |
+
 
 ## **Projeto**
 
