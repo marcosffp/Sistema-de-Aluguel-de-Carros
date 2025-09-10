@@ -2,15 +2,24 @@
 
 ## **História de Usuários**
 
-| Como | Desejo | Para |
-|:-----|:-------|:-----|
-| Usuário | Me cadastrar no sistema | Usar de todos os recursos disponíveis |
-| Cliente | Introduzir, modificar, consultar e cancelar pedidos de aluguel | Poder alugar um carro |
-| Cliente | Solicitar um contrato do tipo de Crédito | Poder ter o carro em meu nome ao final do contrato |
-| Agente | Modificar e avaliar pedidos de aluguel | Dar continuidade ao processo de aluguel de um carro |
-| Agente | Registrar um automóvel | Disponibilizar o mesmo para aluguel |
-| Agente | Registrar um contrato de aluguel com o cliente | Possibilitar o aluguel de um carro para o mesmo |
+Aqui está a estrutura das histórias de usuário conforme o formato solicitado:
 
+| Como            | Desejo                                                                     | Para                                                              |
+| --------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Cliente         | Fazer um pedido de aluguel de automóvel                                    | Poder alugar um veículo                                           |
+| Cliente         | Fazer múltiplos pedidos de aluguel de automóveis                           | Conseguir alugar mais de um veículo                               |
+| Cliente         | Visualizar meus pedidos de aluguel                                         | Acompanhar o andamento de cada pedido                             |
+| Cliente         | Editar meus pedidos de aluguel                                             | Atualizar as informações de um pedido existente                   |
+| Cliente         | Cancelar meu pedido de aluguel                                             | Impedir que o pedido prossiga                                     |
+| Cliente         | Contratar um crédito para um automóvel                                     | Adquirir a propriedade do veículo após o pagamento integral       |
+| Funcionário     | Acessar os pedidos de aluguel                                              | Avaliar as solicitações de aluguel dos clientes                   |
+| Funcionário     | Editar os pedidos de aluguel                                               | Corrigir ou atualizar informações de um pedido existente          |
+| Funcionário     | Encaminhar um pedido de aluguel para o agente bancário                     | Verificar a análise de crédito e a situação financeira do cliente |
+| Funcionário     | Transferir a propriedade do carro para o banco                             | Transferir a responsabilidade do contrato e garantia para o banco |
+| Agente Bancário | Analisar os pedidos de aluguel                                             | Criar um contrato de crédito para o cliente                       |
+| Agente Bancário | Criar um contrato de crédito para o cliente                                | Formalizar o processo de financiamento do automóvel               |
+| Agente Bancário | Transferir a propriedade do carro para o cliente após o pagamento integral | Concluir a transação de compra do veículo                         |
+| Agente Bancário | Editar os pedidos de aluguel                                               | Corrigir ou atualizar informações de um pedido existente          |
 ---
 
 ## **Requisitos**
