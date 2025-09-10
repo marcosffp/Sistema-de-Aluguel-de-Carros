@@ -77,7 +77,7 @@ Aqui está a estrutura das histórias de usuário conforme o formato solicitado:
 
 ### **Diagrama de Classes**
 
-![UML](/projeto/DiagramaDeClasses.jpg)
+![UML](/projeto/DiagramaDeClasses.png)
 
 ### **Diagrama de Pacotes**
 
