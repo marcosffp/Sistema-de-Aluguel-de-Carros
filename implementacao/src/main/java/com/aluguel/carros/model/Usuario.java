@@ -1,31 +1,20 @@
 package com.aluguel.carros.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.aluguel.carros.enums.TipoUsuario;
+import jakarta.persistence.*;
 
 @Entity
-public class Usuario {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Usuario {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false, unique = true)
-  private String rg;
-
-  @Column(nullable = false, unique = true)
-  private String cpf;
-
-  @Column(nullable = false)
   private String nome;
+  private String email;
+  private Boolean ativo;
 
-  @Column(nullable = false)
-  private String endereco;
-
-  @Column(nullable = false)
-  private String profissao;
+  public abstract TipoUsuario getTipoUsuario();
 
   // Getters e Setters
   public Long getId() {
@@ -36,22 +25,6 @@ public class Usuario {
     this.id = id;
   }
 
-  public String getRg() {
-    return rg;
-  }
-
-  public void setRg(String rg) {
-    this.rg = rg;
-  }
-
-  public String getCpf() {
-    return cpf;
-  }
-
-  public void setCpf(String cpf) {
-    this.cpf = cpf;
-  }
-
   public String getNome() {
     return nome;
   }
@@ -60,19 +33,19 @@ public class Usuario {
     this.nome = nome;
   }
 
-  public String getEndereco() {
-    return endereco;
+  public String getEmail() {
+    return email;
   }
 
-  public void setEndereco(String endereco) {
-    this.endereco = endereco;
+  public void setEmail(String email) {
+    this.email = email;
   }
 
-  public String getProfissao() {
-    return profissao;
+  public Boolean getAtivo() {
+    return ativo;
   }
 
-  public void setProfissao(String profissao) {
-    this.profissao = profissao;
+  public void setAtivo(Boolean ativo) {
+    this.ativo = ativo;
   }
 }
