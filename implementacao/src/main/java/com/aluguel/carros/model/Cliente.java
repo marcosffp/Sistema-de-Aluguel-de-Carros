@@ -5,9 +5,18 @@ import jakarta.persistence.*;
 
 @Entity
 public class Cliente extends Usuario {
+    @jakarta.validation.constraints.NotBlank(message = "RG é obrigatório")
     private String rg;
+
+    @jakarta.validation.constraints.NotBlank(message = "CPF é obrigatório")
+    // Para validação de CPF, pode-se usar uma anotação customizada ou apenas o padrão regex:
+    // @jakarta.validation.constraints.Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "CPF inválido")
     private String cpf;
+
+    @jakarta.validation.constraints.NotBlank(message = "Endereço é obrigatório")
     private String endereco;
+
+    @jakarta.validation.constraints.NotBlank(message = "Profissão é obrigatória")
     private String profissao;
 
     @Override

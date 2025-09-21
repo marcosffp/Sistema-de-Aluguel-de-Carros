@@ -24,11 +24,6 @@ public class UsuarioController {
     return usuario.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
   }
 
-  @PostMapping
-  public Usuario criar(@RequestBody Usuario usuario) {
-    return usuarioService.salvar(usuario);
-  }
-
   @PutMapping("/{id}")
   public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @RequestBody Usuario usuario) {
     if (!usuarioService.buscarPorId(id).isPresent()) {

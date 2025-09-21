@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 
 @Entity
 public class AgenteBancario extends Usuario {
+    @jakarta.validation.constraints.NotBlank(message = "CNPJ do banco é obrigatório")
     private String cnpjBanco;
+
+    @jakarta.validation.constraints.NotBlank(message = "Nome do banco é obrigatório")
     private String nomeBanco;
 
     @Override

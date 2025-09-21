@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 public class Funcionario extends Usuario {
+    @jakarta.validation.constraints.NotBlank(message = "Matrícula é obrigatória")
     private String matricula;
 
     @Override

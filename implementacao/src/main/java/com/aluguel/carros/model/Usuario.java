@@ -10,8 +10,13 @@ public abstract class Usuario {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @jakarta.validation.constraints.NotBlank(message = "Nome é obrigatório")
   private String nome;
+
+  @jakarta.validation.constraints.Email(message = "Email inválido")
+  @jakarta.validation.constraints.NotBlank(message = "Email é obrigatório")
   private String email;
+
   private Boolean ativo;
 
   public abstract TipoUsuario getTipoUsuario();
