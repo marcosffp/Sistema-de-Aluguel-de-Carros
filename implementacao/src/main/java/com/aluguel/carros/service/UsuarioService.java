@@ -5,15 +5,19 @@ import com.aluguel.carros.repository.UsuarioRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UsuarioService {
-  
-  @Autowired private PasswordEncoder passwordEncoder;
 
-  @Autowired private UsuarioRepository usuarioRepository;
+  @Autowired
+  @Lazy
+  private PasswordEncoder passwordEncoder;
+
+  @Autowired
+  private UsuarioRepository usuarioRepository;
 
   public Optional<Usuario> buscarPorEmail(String email) {
     return usuarioRepository.findByEmail(email);

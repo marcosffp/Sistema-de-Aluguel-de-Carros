@@ -2,8 +2,11 @@ package com.aluguel.carros.controller;
 
 import com.aluguel.carros.model.Cliente;
 import com.aluguel.carros.service.ClienteService;
+import com.aluguel.carros.service.JwtService;
+import com.aluguel.carros.dto.AuthResponse;
 import com.aluguel.carros.dto.ClienteRequestDTO;
 import com.aluguel.carros.dto.ClienteResponseDTO;
+
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    @Autowired
+    private JwtService jwtService;
+
     @GetMapping
     public List<ClienteResponseDTO> listarTodos() {
         return clienteService.listarTodos().stream()
@@ -33,10 +39,21 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ClienteResponseDTO criar(@Validated @RequestBody ClienteRequestDTO dto) {
-        Cliente cliente = new Cliente(dto.getNome(), dto.getEmail(), dto.getRg(), dto.getCpf(), dto.getEndereco(), dto.getProfissao(), dto.getSenha());
-        ClienteResponseDTO responseDTO = new ClienteResponseDTO(clienteService.salvar(cliente));
-        return responseDTO;
+    public ResponseEntity<AuthResponse> criar(@Validated @RequestBody ClienteRequestDTO dto) {
+        Cliente cliente = new Cliente(dto.getNome(), dto.getEmail(), dto.getRg(), dto.getCpf(), dto.getEndereco(),
+                dto.getProfissao(), dto.getSenha());
+        Cliente clienteSalvo = clienteService.salvar(cliente);
+
+        // Gerar token
+        String token = jwtService.generateToken(clienteSalvo);
+
+        // Retornar o token
+        AuthResponse response = new AuthResponse();
+        response.setToken(token);
+        response.setNome(clienteSalvo.getNome());
+        response.setExpiresIn(jwtService.getExpirationTime());
+
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
