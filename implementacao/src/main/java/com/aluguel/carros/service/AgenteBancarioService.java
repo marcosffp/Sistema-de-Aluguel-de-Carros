@@ -3,6 +3,7 @@ package com.aluguel.carros.service;
 import com.aluguel.carros.model.AgenteBancario;
 import com.aluguel.carros.repository.AgenteBancarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,9 @@ public class AgenteBancarioService {
     @Autowired
     private AgenteBancarioRepository agenteBancarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public List<AgenteBancario> listarTodos() {
         return agenteBancarioRepository.findAll();
     }
@@ -22,6 +26,10 @@ public class AgenteBancarioService {
     }
 
     public AgenteBancario salvar(AgenteBancario agenteBancario) {
+        if (agenteBancario.getSenha() != null) {
+            String senhaCriptografada = passwordEncoder.encode(agenteBancario.getSenha());
+            agenteBancario.setSenha(senhaCriptografada);
+        }
         return agenteBancarioRepository.save(agenteBancario);
     }
 

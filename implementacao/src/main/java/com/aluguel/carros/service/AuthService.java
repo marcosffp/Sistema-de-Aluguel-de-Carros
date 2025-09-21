@@ -25,7 +25,7 @@ public class AuthService {
         Usuario usuario = usuarioService.buscarPorEmail(request.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Email não encontrado"));
         if (!Boolean.TRUE.equals(usuario.getAtivo())) {
-            throw new BadCredentialsException("Usuário inativo");
+            throw new IllegalArgumentException("Usuário inativo");
         }
         if (!passwordEncoder.matches(request.getSenha(), usuario.getSenha())) {
             throw new BadCredentialsException("Senha inválida");

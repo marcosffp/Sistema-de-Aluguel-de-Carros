@@ -2,7 +2,7 @@ package com.aluguel.carros.controller;
 
 import com.aluguel.carros.model.Cliente;
 import com.aluguel.carros.service.ClienteService;
-import com.aluguel.carros.dto.ClienteCadastroDTO;
+import com.aluguel.carros.dto.ClienteRequestDTO;
 import com.aluguel.carros.dto.ClienteResponseDTO;
 
 import org.springframework.validation.annotation.Validated;
@@ -33,7 +33,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ClienteResponseDTO criar(@Validated @RequestBody ClienteCadastroDTO dto) {
+    public ClienteResponseDTO criar(@Validated @RequestBody ClienteRequestDTO dto) {
         Cliente cliente = new Cliente(dto.getNome(), dto.getEmail(), dto.getRg(), dto.getCpf(), dto.getEndereco(), dto.getProfissao(), dto.getSenha());
         ClienteResponseDTO responseDTO = new ClienteResponseDTO(clienteService.salvar(cliente));
         return responseDTO;

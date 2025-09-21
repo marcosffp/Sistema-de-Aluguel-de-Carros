@@ -1,6 +1,6 @@
 package com.aluguel.carros.controller;
 
-import com.aluguel.carros.dto.FuncionarioCadastroDTO;
+import com.aluguel.carros.dto.FuncionarioRequestDTO;
 import com.aluguel.carros.dto.FuncionarioResponseDTO;
 import com.aluguel.carros.model.Funcionario;
 import com.aluguel.carros.service.FuncionarioService;
@@ -31,7 +31,7 @@ public class FuncionarioController {
     }
 
     @PostMapping
-    public FuncionarioResponseDTO criar(@RequestBody FuncionarioCadastroDTO funcionario) {
+    public FuncionarioResponseDTO criar(@RequestBody FuncionarioRequestDTO funcionario) {
         Funcionario novoFuncionario = new Funcionario(funcionario.getNome(), funcionario.getEmail(), funcionario.getSenha(), funcionario.getMatricula());
         return new FuncionarioResponseDTO(funcionarioService.salvar(novoFuncionario));
     }

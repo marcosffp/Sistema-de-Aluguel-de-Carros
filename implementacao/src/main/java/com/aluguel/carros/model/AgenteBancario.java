@@ -11,6 +11,17 @@ public class AgenteBancario extends Usuario {
     @jakarta.validation.constraints.NotBlank(message = "Nome do banco é obrigatório")
     private String nomeBanco;
 
+    public AgenteBancario(){}
+
+    public AgenteBancario(String nome, String email, String senha, String cnpjBanco, String nomeBanco) {
+        this.setNome(nome);
+        this.setEmail(email);
+        this.setSenha(senha);
+        this.cnpjBanco = cnpjBanco;
+        this.nomeBanco = nomeBanco;
+        this.setAtivo(true); // Define o agente bancário como ativo por padrão
+    }
+
     @Override
     public TipoUsuario getTipoUsuario() {
         return TipoUsuario.AGENTE_BANCARIO;

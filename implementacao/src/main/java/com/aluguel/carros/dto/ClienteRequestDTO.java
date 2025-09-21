@@ -3,7 +3,7 @@ package com.aluguel.carros.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public class ClienteCadastroDTO {
+public class ClienteRequestDTO {
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
