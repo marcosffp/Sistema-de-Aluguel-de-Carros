@@ -2,6 +2,10 @@ package com.aluguel.carros.controller;
 
 import com.aluguel.carros.model.Cliente;
 import com.aluguel.carros.service.ClienteService;
+import com.aluguel.carros.dto.ClienteCadastroDTO;
+import com.aluguel.carros.dto.ClienteResponseDTO;
+
+import org.springframework.validation.annotation.Validated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,28 +20,33 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public List<Cliente> listarTodos() {
-        return clienteService.listarTodos();
+    public List<ClienteResponseDTO> listarTodos() {
+        return clienteService.listarTodos().stream()
+                .map(ClienteResponseDTO::new)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<ClienteResponseDTO> buscarPorId(@PathVariable Long id) {
         Optional<Cliente> cliente = clienteService.buscarPorId(id);
-        return cliente.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return cliente.map(c -> ResponseEntity.ok(new ClienteResponseDTO(c))).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Cliente criar(@RequestBody Cliente cliente) {
-        return clienteService.salvar(cliente);
+    public ClienteResponseDTO criar(@Validated @RequestBody ClienteCadastroDTO dto) {
+        Cliente cliente = new Cliente(dto.getNome(), dto.getEmail(), dto.getRg(), dto.getCpf(), dto.getEndereco(), dto.getProfissao(), dto.getSenha());
+        ClienteResponseDTO responseDTO = new ClienteResponseDTO(clienteService.salvar(cliente));
+        return responseDTO;
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
+    public ResponseEntity<ClienteResponseDTO> atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
         if (!clienteService.buscarPorId(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
         cliente.setId(id);
-        return ResponseEntity.ok(clienteService.salvar(cliente));
+        ClienteResponseDTO responseDTO = new ClienteResponseDTO(clienteService.salvar(cliente));
+        return ResponseEntity.ok(responseDTO);
     }
 
     @DeleteMapping("/{id}")

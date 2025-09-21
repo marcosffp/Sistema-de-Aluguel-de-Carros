@@ -15,7 +15,11 @@ public abstract class Usuario {
 
   @jakarta.validation.constraints.Email(message = "Email inválido")
   @jakarta.validation.constraints.NotBlank(message = "Email é obrigatório")
+  @jakarta.persistence.Column(unique = true)
   private String email;
+
+  @jakarta.validation.constraints.NotBlank(message = "Senha é obrigatória")
+  private String senha;
 
   private Boolean ativo;
 
@@ -44,6 +48,17 @@ public abstract class Usuario {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public String getSenha() {
+    return senha;
+  }
+
+  public void setSenha(String senha) {
+    if( senha == null || senha.trim().isEmpty() || senha.length() < 6 ) {
+      throw new IllegalArgumentException("Senha deve ter pelo menos 6 caracteres.");
+    }
+    this.senha = senha;
   }
 
   public Boolean getAtivo() {

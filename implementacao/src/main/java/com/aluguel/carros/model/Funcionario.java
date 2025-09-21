@@ -8,6 +8,16 @@ public class Funcionario extends Usuario {
     @jakarta.validation.constraints.NotBlank(message = "Matrícula é obrigatória")
     private String matricula;
 
+    public Funcionario(){}
+
+    public Funcionario(String nome, String email, String senha, String matricula) {
+        this.setNome(nome);
+        this.setEmail(email);
+        this.setSenha(senha);
+        this.matricula = matricula;
+        this.setAtivo(true); // Define o funcionário como ativo por padrão
+    }
+
     @Override
     public TipoUsuario getTipoUsuario() {
         return TipoUsuario.FUNCIONARIO;

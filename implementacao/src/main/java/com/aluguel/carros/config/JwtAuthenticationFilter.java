@@ -1,7 +1,8 @@
 package com.aluguel.carros.config;
 
 import com.aluguel.carros.service.JwtService;
-import com.aluguel.carros.repository.CredencialRepository;
+import com.aluguel.carros.service.UsuarioService;
+import com.aluguel.carros.model.Usuario;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,8 +23,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtService jwtService;
 
+
     @Autowired
-    private CredencialRepository credencialRepository;
+    private UsuarioService usuarioService;
 
     @Override
     protected void doFilterInternal(
@@ -34,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
-        final String login;
+    final String email;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -42,14 +44,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         jwt = authHeader.substring(7);
-        login = jwtService.extractLogin(jwt);
-
-        if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            var credencial = credencialRepository.findByLoginAndAtivaTrue(login);
-            
-            if (credencial.isPresent() && jwtService.isTokenValid(jwt, login)) {
+        email = jwtService.extractLogin(jwt);
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            var usuarioOpt = usuarioService.buscarPorEmail(email);
+            if (usuarioOpt.isPresent() && jwtService.isTokenValid(jwt, email)) {
+                Usuario usuario = usuarioOpt.get();
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        login,
+                        usuario,
                         null,
                         new ArrayList<>()
                 );

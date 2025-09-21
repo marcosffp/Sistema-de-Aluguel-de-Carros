@@ -1,5 +1,6 @@
 package com.aluguel.carros.controller;
 
+import com.aluguel.carros.dto.AgenteBancarioResponseDTO;
 import com.aluguel.carros.model.AgenteBancario;
 import com.aluguel.carros.service.AgenteBancarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,28 +17,30 @@ public class AgenteBancarioController {
     private AgenteBancarioService agenteBancarioService;
 
     @GetMapping
-    public List<AgenteBancario> listarTodos() {
-        return agenteBancarioService.listarTodos();
+    public List<AgenteBancarioResponseDTO> listarTodos() {
+        return agenteBancarioService.listarTodos().stream()
+                .map(AgenteBancarioResponseDTO::new)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AgenteBancario> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<AgenteBancarioResponseDTO> buscarPorId(@PathVariable Long id) {
         Optional<AgenteBancario> agenteBancario = agenteBancarioService.buscarPorId(id);
-        return agenteBancario.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return agenteBancario.map(AgenteBancarioResponseDTO::new).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public AgenteBancario criar(@RequestBody AgenteBancario agenteBancario) {
-        return agenteBancarioService.salvar(agenteBancario);
+    public AgenteBancarioResponseDTO criar(@RequestBody AgenteBancario agenteBancario) {
+        return new AgenteBancarioResponseDTO(agenteBancarioService.salvar(agenteBancario));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AgenteBancario> atualizar(@PathVariable Long id, @RequestBody AgenteBancario agenteBancario) {
+    public ResponseEntity<AgenteBancarioResponseDTO> atualizar(@PathVariable Long id, @RequestBody AgenteBancario agenteBancario) {
         if (!agenteBancarioService.buscarPorId(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
         agenteBancario.setId(id);
-        return ResponseEntity.ok(agenteBancarioService.salvar(agenteBancario));
+        return ResponseEntity.ok(new AgenteBancarioResponseDTO(agenteBancarioService.salvar(agenteBancario)));
     }
 
     @DeleteMapping("/{id}")

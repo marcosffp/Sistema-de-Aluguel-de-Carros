@@ -2,20 +2,18 @@ package com.aluguel.carros.service;
 
 import com.aluguel.carros.dto.AuthResponse;
 import com.aluguel.carros.dto.LoginRequest;
-import com.aluguel.carros.model.Credencial;
-import com.aluguel.carros.repository.CredencialRepository;
+import com.aluguel.carros.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 public class AuthService {
 
+
     @Autowired
-    private CredencialRepository credencialRepository;
+    private UsuarioService usuarioService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -24,36 +22,20 @@ public class AuthService {
     private JwtService jwtService;
 
     public AuthResponse login(LoginRequest request) {
-        // 1. Buscar credencial
-        Credencial credencial = credencialRepository
-                .findByLoginAndAtivaTrue(request.getLogin())
-                .orElseThrow(() -> new BadCredentialsException("Login inválido"));
-
-        // 2. Verificar senha
-        if (!passwordEncoder.matches(request.getSenha(), credencial.getSenha())) {
-            credencial.incrementarTentativas();
-            if (credencial.getTentativasLogin() >= 5) {
-                credencial.setAtiva(false);
-            }
-            credencialRepository.save(credencial);
+        Usuario usuario = usuarioService.buscarPorEmail(request.getEmail())
+                .orElseThrow(() -> new BadCredentialsException("Email não encontrado"));
+        if (!Boolean.TRUE.equals(usuario.getAtivo())) {
+            throw new BadCredentialsException("Usuário inativo");
+        }
+        if (!passwordEncoder.matches(request.getSenha(), usuario.getSenha())) {
             throw new BadCredentialsException("Senha inválida");
         }
-
-        // 3. Reset tentativas e atualizar último login
-        credencial.resetTentativas();
-        credencial.setUltimoLogin(LocalDateTime.now());
-        credencialRepository.save(credencial);
-
-        // 4. Gerar JWT
-        String token = jwtService.generateToken(credencial);
-
-        // 5. Criar resposta
+        String token = jwtService.generateToken(usuario);
         AuthResponse response = new AuthResponse();
         response.setToken(token);
-        response.setTipoUsuario(credencial.getTipoUsuario());
-        response.setNome(credencial.getUsuario().getNome());
+        response.setTipoUsuario(usuario.getTipoUsuario());
+        response.setNome(usuario.getNome());
         response.setExpiresIn(jwtService.getExpirationTime());
-
         return response;
     }
 }

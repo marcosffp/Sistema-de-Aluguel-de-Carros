@@ -1,6 +1,6 @@
 package com.aluguel.carros.service;
 
-import com.aluguel.carros.model.Credencial;
+import com.aluguel.carros.model.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -27,18 +27,15 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(Credencial credencial) {
-        return generateToken(new HashMap<>(), credencial);
+    public String generateToken(Usuario usuario) {
+        return generateToken(new HashMap<>(), usuario);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, Credencial credencial) {
-        extraClaims.put("tipoUsuario", credencial.getTipoUsuario().name());
-        extraClaims.put("userId", credencial.getId());
-        extraClaims.put("nome", credencial.getUsuario().getNome());
-        
+    public String generateToken(Map<String, Object> extraClaims, Usuario usuario) {
+        extraClaims.put("tipoUsuario", usuario.getTipoUsuario().name());
         return Jwts.builder()
                 .claims(extraClaims)
-                .subject(credencial.getLogin())
+                .subject(usuario.getEmail())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSignInKey())
