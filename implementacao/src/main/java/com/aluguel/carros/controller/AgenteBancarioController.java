@@ -1,17 +1,23 @@
 package com.aluguel.carros.controller;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.aluguel.carros.dto.AgenteBancarioRequestDTO;
 import com.aluguel.carros.dto.AgenteBancarioResponseDTO;
 import com.aluguel.carros.dto.AuthResponse;
-import com.aluguel.carros.model.AgenteBancario;
 import com.aluguel.carros.service.AgenteBancarioService;
-import com.aluguel.carros.service.JwtService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/agentes")
@@ -19,59 +25,37 @@ public class AgenteBancarioController {
     @Autowired
     private AgenteBancarioService agenteBancarioService;
 
-    @Autowired
-    private JwtService jwtService;
-
     @GetMapping
-    public List<AgenteBancarioResponseDTO> listarTodos() {
-        return agenteBancarioService.listarTodos().stream()
-                .map(AgenteBancarioResponseDTO::new)
-                .toList();
+    public ResponseEntity<List<AgenteBancarioResponseDTO>> listarTodos() {
+        List<AgenteBancarioResponseDTO> agentes = agenteBancarioService.listarTodos();
+        return ResponseEntity.ok(agentes);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AgenteBancarioResponseDTO> buscarPorId(@PathVariable Long id) {
-        Optional<AgenteBancario> agenteBancario = agenteBancarioService.buscarPorId(id);
-        return agenteBancario.map(AgenteBancarioResponseDTO::new).map(ResponseEntity::ok)
+        Optional<AgenteBancarioResponseDTO> agente = agenteBancarioService.buscarPorId(id);
+        return agente.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<AuthResponse> criar(@RequestBody AgenteBancarioRequestDTO dto) {
-        AgenteBancario agenteBancario = new AgenteBancario(dto.getNome(), dto.getEmail(), dto.getSenha(),
-                dto.getCnpjBanco(), dto.getNomeBanco());
-        AgenteBancario agenteSalvo = agenteBancarioService.salvar(agenteBancario);
-
-        // Gerar token
-        String token = jwtService.generateToken(agenteSalvo);
-
-        // Retornar o token
-        AuthResponse response = new AuthResponse();
-        response.setToken(token);
-        response.setNome(agenteSalvo.getNome());
-        response.setExpiresIn(jwtService.getExpirationTime());
-
+        AuthResponse response = agenteBancarioService.criar(dto);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<AgenteBancarioResponseDTO> atualizar(@PathVariable Long id,
             @RequestBody AgenteBancarioRequestDTO dto) {
-        if (!agenteBancarioService.buscarPorId(id).isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        AgenteBancario agenteBancario = new AgenteBancario(dto.getNome(), dto.getEmail(), dto.getSenha(),
-                dto.getCnpjBanco(), dto.getNomeBanco());
-        agenteBancario.setId(id);
-        return ResponseEntity.ok(new AgenteBancarioResponseDTO(agenteBancarioService.salvar(agenteBancario)));
+        Optional<AgenteBancarioResponseDTO> agenteAtualizado = agenteBancarioService.atualizar(id, dto);
+        return agenteAtualizado.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        if (!agenteBancarioService.buscarPorId(id).isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        agenteBancarioService.deletar(id);
-        return ResponseEntity.noContent().build();
+        boolean deletado = agenteBancarioService.deletar(id);
+        return deletado ? ResponseEntity.noContent().build() 
+                        : ResponseEntity.notFound().build();
     }
 }

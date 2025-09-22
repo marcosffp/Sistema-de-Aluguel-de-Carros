@@ -1,18 +1,23 @@
 package com.aluguel.carros.controller;
 
-import com.aluguel.carros.dto.AuthResponse;
-import com.aluguel.carros.dto.FuncionarioRequestDTO;
-import com.aluguel.carros.dto.FuncionarioResponseDTO;
-import com.aluguel.carros.model.Funcionario;
-import com.aluguel.carros.service.FuncionarioService;
-import com.aluguel.carros.service.JwtService;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
+import com.aluguel.carros.dto.AuthResponse;
+import com.aluguel.carros.dto.FuncionarioRequestDTO;
+import com.aluguel.carros.dto.FuncionarioResponseDTO;
+import com.aluguel.carros.service.FuncionarioService;
 
 @RestController
 @RequestMapping("/funcionarios")
@@ -20,57 +25,37 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;
 
-    @Autowired
-    private JwtService jwtService;
-
     @GetMapping
-    public List<FuncionarioResponseDTO> listarTodos() {
-        return funcionarioService.listarTodos().stream()
-                .map(FuncionarioResponseDTO::new)
-                .toList();
+    public ResponseEntity<List<FuncionarioResponseDTO>> listarTodos() {
+        List<FuncionarioResponseDTO> funcionarios = funcionarioService.listarTodos();
+        return ResponseEntity.ok(funcionarios);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<FuncionarioResponseDTO> buscarPorId(@PathVariable Long id) {
-        Optional<Funcionario> funcionario = funcionarioService.buscarPorId(id);
-        return funcionario.map(f -> ResponseEntity.ok(new FuncionarioResponseDTO(f)))
+        Optional<FuncionarioResponseDTO> funcionario = funcionarioService.buscarPorId(id);
+        return funcionario.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<AuthResponse> criar(@RequestBody FuncionarioRequestDTO funcionario) {
-        Funcionario novoFuncionario = new Funcionario(funcionario.getNome(), funcionario.getEmail(),
-                funcionario.getSenha(), funcionario.getMatricula());
-        Funcionario funcionarioSalvo = funcionarioService.salvar(novoFuncionario);
-
-        // Gerar token
-        String token = jwtService.generateToken(funcionarioSalvo);
-
-        // Retornar o token
-        AuthResponse response = new AuthResponse();
-        response.setToken(token);
-        response.setNome(funcionarioSalvo.getNome());
-        response.setExpiresIn(jwtService.getExpirationTime());
-
+    public ResponseEntity<AuthResponse> criar(@RequestBody FuncionarioRequestDTO dto) {
+        AuthResponse response = funcionarioService.criar(dto);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<FuncionarioResponseDTO> atualizar(@PathVariable Long id,
-            @RequestBody Funcionario funcionario) {
-        if (!funcionarioService.buscarPorId(id).isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        funcionario.setId(id);
-        return ResponseEntity.ok(new FuncionarioResponseDTO(funcionarioService.salvar(funcionario)));
+            @RequestBody FuncionarioRequestDTO dto) {
+        Optional<FuncionarioResponseDTO> funcionarioAtualizado = funcionarioService.atualizar(id, dto);
+        return funcionarioAtualizado.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        if (!funcionarioService.buscarPorId(id).isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        funcionarioService.deletar(id);
-        return ResponseEntity.noContent().build();
+        boolean deletado = funcionarioService.deletar(id);
+        return deletado ? ResponseEntity.noContent().build() 
+                        : ResponseEntity.notFound().build();
     }
 }
