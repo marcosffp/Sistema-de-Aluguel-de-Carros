@@ -24,11 +24,12 @@ public class Cliente extends Usuario {
     public Cliente(String nome, String email, String rg, String cpf, String endereco, String profissao, String senha) {
         this.setNome(nome);
         this.setEmail(email);
+        this.setSenha(senha); // 
         this.rg = rg;
         this.cpf = cpf;
         this.endereco = endereco;
         this.profissao = profissao;
-        this.setAtivo(true); // Define o cliente como ativo por padrão
+        this.setAtivo(true);
     }
 
     @Override
