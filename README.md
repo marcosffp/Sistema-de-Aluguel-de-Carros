@@ -82,3 +82,7 @@ Aqui está a estrutura das histórias de usuário conforme o formato solicitado:
 ### **Diagrama de Pacotes**
 
 ![PackageDiagram](/projeto/DiagramaDePacotes.jpg)
+
+### **Diagrama de Implantação**
+
+![ImplantationDiagram](/projeto/DiagramaDeImplantacao.jpg)
