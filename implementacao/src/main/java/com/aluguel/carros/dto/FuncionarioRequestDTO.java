@@ -5,6 +5,8 @@ public class FuncionarioRequestDTO {
     private String email;
     private String senha;
     private String matricula;
+    private String nomeEmpresa;
+    private String cnpjEmpresa;
 
     // Getters e Setters
     public String getNome() { return nome; }
@@ -14,5 +16,9 @@ public class FuncionarioRequestDTO {
     public String getSenha() { return senha; }
     public void setSenha(String senha) { this.senha = senha; }
     public String getMatricula() { return matricula; }
-    public void setMatricula(String cargo) { this.matricula = cargo; }
+    public void setMatricula(String matricula) { this.matricula = matricula; }
+    public String getNomeEmpresa() { return nomeEmpresa; }
+    public void setNomeEmpresa(String nomeEmpresa) { this.nomeEmpresa = nomeEmpresa; }
+    public String getCnpjEmpresa() { return cnpjEmpresa; }
+    public void setCnpjEmpresa(String cnpjEmpresa) { this.cnpjEmpresa = cnpjEmpresa; }
 }

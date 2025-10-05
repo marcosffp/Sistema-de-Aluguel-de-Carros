@@ -1,7 +1,9 @@
 package com.aluguel.carros.service;
 
+import com.aluguel.carros.dto.FuncionarioResponseDTO;
 import com.aluguel.carros.dto.VeiculoRequestDTO;
 import com.aluguel.carros.dto.VeiculoResponseDTO;
+import com.aluguel.carros.model.Proprietario;
 import com.aluguel.carros.model.Veiculo;
 import com.aluguel.carros.repository.VeiculoRepository;
 import java.util.List;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class VeiculoService {
 
+  @Autowired private FuncionarioService funcionarioService;
   @Autowired private VeiculoRepository veiculoRepository;
 
   public List<VeiculoResponseDTO> listarTodos() {
@@ -31,7 +34,7 @@ public class VeiculoService {
     return veiculoRepository.findById(id).map(this::convertToResponseDTO);
   }
 
-  public VeiculoResponseDTO criarVeiculo(VeiculoRequestDTO requestDTO) {
+  public VeiculoResponseDTO criarVeiculo(VeiculoRequestDTO requestDTO, Long funcionarioId) {
     // Verificar se matrícula já existe
     if (veiculoRepository.findByMatricula(requestDTO.getMatricula()).isPresent()) {
       throw new IllegalArgumentException("Já existe um veículo com esta matrícula");
@@ -42,7 +45,14 @@ public class VeiculoService {
       throw new IllegalArgumentException("Já existe um veículo com esta placa");
     }
 
+    // Criar proprietário inicial com base no funcionário que está registrando o veículo
+    FuncionarioResponseDTO funcionario = funcionarioService.buscarPorId(funcionarioId)
+        .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado"));
+    String identificacaoProprietario = funcionario.getCnpjEmpresa();
+    String nomeProprietario = funcionario.getNomeEmpresa();
+
     Veiculo veiculo = convertToEntity(requestDTO);
+    veiculo.setProprietario(new Proprietario(identificacaoProprietario, nomeProprietario));
     Veiculo savedVeiculo = veiculoRepository.save(veiculo);
     return convertToResponseDTO(savedVeiculo);
   }

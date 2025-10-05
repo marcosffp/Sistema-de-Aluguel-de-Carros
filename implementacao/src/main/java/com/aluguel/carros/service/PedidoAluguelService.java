@@ -5,6 +5,7 @@ import com.aluguel.carros.dto.PedidoAluguelRequestDTO;
 import com.aluguel.carros.dto.PedidoAluguelResponseDTO;
 import com.aluguel.carros.dto.VeiculoResponseDTO;
 import com.aluguel.carros.enums.StatusPedido;
+import com.aluguel.carros.enums.TipoProprietario;
 import com.aluguel.carros.model.*;
 import com.aluguel.carros.repository.*;
 import java.util.Arrays;
@@ -218,6 +219,19 @@ public class PedidoAluguelService {
     } else if (avaliacaoDTO.getStatus() == StatusPedido.APROVADO) {
       // Marcar veículo como indisponível
       veiculoService.marcarComoIndisponivel(pedido.getVeiculo().getId());
+      
+      // Se o cliente solicitou crédito, iniciar processo
+      if(pedido.getSolicitaCredito()){
+        Long agenteBancarioId = avaliacaoDTO.getAgenteBancarioId();
+        AgenteBancario agenteBancario = agenteBancarioRepository.findById(agenteBancarioId)
+            .orElseThrow(() -> new RuntimeException("Agente bancário não encontrado"));
+
+        Long veiculoId = pedido.getVeiculo().getId();
+        Veiculo veiculo = veiculoRepository.findById(veiculoId)
+            .orElseThrow(() -> new RuntimeException("Veículo não encontrado"));
+        veiculo.setDisponivel(false);
+        veiculo.setProprietario(new Proprietario(agenteBancario.getCnpjBanco(), agenteBancario.getNomeBanco(), TipoProprietario.BANCO));
+      }
     }
 
     if (avaliacaoDTO.getObservacoes() != null) {

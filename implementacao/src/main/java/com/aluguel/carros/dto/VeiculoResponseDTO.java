@@ -1,5 +1,7 @@
 package com.aluguel.carros.dto;
 
+import com.aluguel.carros.model.Proprietario;
+
 public class VeiculoResponseDTO {
   private Long id;
   private String matricula;
@@ -8,6 +10,7 @@ public class VeiculoResponseDTO {
   private String modelo;
   private String placa;
   private Boolean disponivel;
+  private Proprietario proprietario;
 
   // Construtores
   public VeiculoResponseDTO() {}
@@ -27,6 +30,17 @@ public class VeiculoResponseDTO {
     this.modelo = modelo;
     this.placa = placa;
     this.disponivel = disponivel;
+  }
+
+  public VeiculoResponseDTO(Long id, String matricula, Integer ano, String marca, String modelo, String placa, Boolean disponivel, Proprietario proprietario) {
+    this.id = id;
+    this.matricula = matricula;
+    this.ano = ano;
+    this.marca = marca;
+    this.modelo = modelo;
+    this.placa = placa;
+    this.disponivel = disponivel;
+    this.proprietario = proprietario;
   }
 
   // Getters e Setters
@@ -84,5 +98,13 @@ public class VeiculoResponseDTO {
 
   public void setDisponivel(Boolean disponivel) {
     this.disponivel = disponivel;
+  }
+
+  public Proprietario getProprietario() {
+    return proprietario;
+  }
+
+  public void setProprietario(Proprietario proprietario) {
+    this.proprietario = proprietario;
   }
 }

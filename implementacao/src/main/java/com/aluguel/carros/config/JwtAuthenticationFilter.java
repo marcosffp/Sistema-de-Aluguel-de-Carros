@@ -25,47 +25,45 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtService jwtService;
 
-
     @Autowired
     private UsuarioService usuarioService;
 
     @Override
-protected void doFilterInternal(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        FilterChain filterChain
-) throws ServletException, IOException {
-    
-    final String authHeader = request.getHeader("Authorization");
-    final String jwt;
-    final String email;
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
 
-    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-        filterChain.doFilter(request, response);
-        return;
-    }
+        final String authHeader = request.getHeader("Authorization");
+        final String jwt;
+        final String email;
 
-    jwt = authHeader.substring(7);
-    email = jwtService.extractLogin(jwt);
-    if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-        var usuarioOpt = usuarioService.buscarPorEmail(email);
-        if (usuarioOpt.isPresent() && jwtService.isTokenValid(jwt, email)) {
-            Usuario usuario = usuarioOpt.get();
-            
-            // ✅ CRIAR AUTHORITIES BASEADAS NO TIPO DE USUÁRIO
-            List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + usuario.getTipoUsuario().name()));
-            
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    usuario,
-                    null,
-                    authorities  // ✅ AGORA COM PERMISSÕES!
-            );
-            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
         }
+
+        jwt = authHeader.substring(7);
+        email = jwtService.extractLogin(jwt);
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            var usuarioOpt = usuarioService.buscarPorEmail(email);
+            if (usuarioOpt.isPresent() && jwtService.isTokenValid(jwt, email)) {
+                Usuario usuario = usuarioOpt.get();
+
+                // ✅ CRIAR AUTHORITIES BASEADAS NO TIPO DE USUÁRIO
+                List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + usuario.getTipoUsuario().name()));
+
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        usuario,
+                        null,
+                        authorities // ✅ AGORA COM PERMISSÕES!
+                );
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        }
+
+        filterChain.doFilter(request, response);
     }
-    
-    filterChain.doFilter(request, response);
-}
 }

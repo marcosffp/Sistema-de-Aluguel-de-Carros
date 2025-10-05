@@ -2,19 +2,21 @@ package com.aluguel.carros.controller;
 
 import com.aluguel.carros.dto.VeiculoRequestDTO;
 import com.aluguel.carros.dto.VeiculoResponseDTO;
+import com.aluguel.carros.model.Usuario;
 import com.aluguel.carros.service.VeiculoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/veiculos")
+@RequestMapping("/veiculos")
 @CrossOrigin(origins = "*")
 @Tag(name = "Veículos", description = "Operações relacionadas ao gerenciamento de veículos")
 public class VeiculoController {
@@ -43,9 +45,11 @@ public class VeiculoController {
   @PostMapping
   @PreAuthorize("hasRole('FUNCIONARIO')")
   public ResponseEntity<VeiculoResponseDTO> criarVeiculo(
-      @Valid @RequestBody VeiculoRequestDTO requestDTO) {
+      @Valid @RequestBody VeiculoRequestDTO requestDTO,
+      Authentication authentication) {
     try {
-      VeiculoResponseDTO novoVeiculo = veiculoService.criarVeiculo(requestDTO);
+      Long funcionarioId = ((Usuario) authentication.getPrincipal()).getId();
+      VeiculoResponseDTO novoVeiculo = veiculoService.criarVeiculo(requestDTO, funcionarioId);
       return ResponseEntity.status(HttpStatus.CREATED).body(novoVeiculo);
     } catch (IllegalArgumentException e) {
       return ResponseEntity.badRequest().build();

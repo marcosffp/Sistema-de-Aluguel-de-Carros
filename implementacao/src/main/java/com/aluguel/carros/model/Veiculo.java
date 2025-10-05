@@ -31,6 +31,9 @@ public class Veiculo {
   @Column(name = "disponivel")
   private Boolean disponivel = true;
 
+  @Embedded
+  private Proprietario proprietario;
+
   // Construtores
   public Veiculo() {}
 
@@ -41,6 +44,23 @@ public class Veiculo {
     this.modelo = modelo;
     this.placa = placa;
     this.disponivel = true;
+    this.proprietario = null;
+  }
+
+  public Veiculo(
+      String matricula,
+      Integer ano,
+      String marca,
+      String modelo,
+      String placa,
+      Proprietario proprietario) {
+    this.matricula = matricula;
+    this.ano = ano;
+    this.marca = marca;
+    this.modelo = modelo;
+    this.placa = placa;
+    this.disponivel = true;
+    this.proprietario = proprietario;
   }
 
   // Getters e Setters
@@ -98,5 +118,13 @@ public class Veiculo {
 
   public void setDisponivel(Boolean disponivel) {
     this.disponivel = disponivel;
+  }
+
+  public Proprietario getProprietario() {
+    return proprietario;
+  }
+
+  public void setProprietario(Proprietario proprietario) {
+    this.proprietario = proprietario;
   }
 }
