@@ -16,11 +16,13 @@ public class Funcionario extends Usuario {
 
     public Funcionario(){}
 
-    public Funcionario(String nome, String email, String senha, String matricula) {
+    public Funcionario(String nome, String email, String senha, String matricula, String nomeEmpresa, String cnpjEmpresa) {
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);
         this.matricula = matricula;
+        this.nomeEmpresa = nomeEmpresa;
+        this.cnpjEmpresa = cnpjEmpresa;
         this.setAtivo(true); // Define o funcionário como ativo por padrão
     }
 

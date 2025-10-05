@@ -134,7 +134,8 @@ public class VeiculoService {
         veiculo.getMarca(),
         veiculo.getModelo(),
         veiculo.getPlaca(),
-        veiculo.getDisponivel());
+        veiculo.getDisponivel(),
+        veiculo.getProprietario());
   }
 
   private Veiculo convertToEntity(VeiculoRequestDTO requestDTO) {

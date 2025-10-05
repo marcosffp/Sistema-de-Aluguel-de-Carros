@@ -37,7 +37,7 @@ public class FuncionarioService {
 
     public AuthResponse criar(FuncionarioRequestDTO dto) {
         Funcionario funcionario = new Funcionario(dto.getNome(), dto.getEmail(), 
-                dto.getSenha(), dto.getMatricula());
+                dto.getSenha(), dto.getMatricula(), dto.getNomeEmpresa(), dto.getCnpjEmpresa());
         
         if (funcionario.getSenha() != null) {
             String senhaCriptografada = passwordEncoder.encode(funcionario.getSenha());
@@ -69,6 +69,8 @@ public class FuncionarioService {
         funcionario.setNome(dto.getNome());
         funcionario.setEmail(dto.getEmail());
         funcionario.setMatricula(dto.getMatricula());
+        funcionario.setNomeEmpresa(dto.getNomeEmpresa());
+        funcionario.setCnpjEmpresa(dto.getCnpjEmpresa());
         
         if (dto.getSenha() != null && !dto.getSenha().isEmpty()) {
             funcionario.setSenha(passwordEncoder.encode(dto.getSenha()));

@@ -7,6 +7,8 @@ public class Proprietario {
     private String nome;
     private TipoProprietario tipoProprietario; // Enum: CLIENTE ou BANCO ou EMPRESA
 
+    public Proprietario() {}
+
     public Proprietario(String identificador, String nome) {
         this.identificador = identificador;
         this.nome = nome;
