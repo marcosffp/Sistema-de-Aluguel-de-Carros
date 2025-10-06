@@ -73,7 +73,7 @@ Aqui está a estrutura das histórias de usuário conforme o formato solicitado:
 
 ### **Diagrama de Casos de Uso**
 
-![UseCaseDiagram](/projeto/DiagramaDeCasosDeUso.drawio.svg)
+![UseCaseDiagram](/projeto/edicoes/DiagramaDeCasosDeUso.drawio.svg)
 
 ### **Diagrama de Classes**
 
@@ -82,6 +82,12 @@ Aqui está a estrutura das histórias de usuário conforme o formato solicitado:
 ### **Diagrama de Pacotes**
 
 ![PackageDiagram](/projeto/DiagramaDePacotes.jpg)
+
+
+### **Diagrama de Componente**
+
+![ComponentDiagram](/projeto/DiagramaDeComponente.png)
+
 
 ### **Diagrama de Implantação**
 
